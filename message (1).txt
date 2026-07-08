@@ -1,3 +1,41 @@
+- 1. Optimización gráfica instantánea para el EliteBook
+pcall(function() settings().Rendering.QualityLevel = Enum.QualityLevel.Level01 end)
+pcall(function()
+    local L = game:GetService("Lighting")
+    L.GlobalShadows = false
+    L.FogEnd = 1e9
+    L.Brightness = 1
+end)
+
+-- 2. Limpieza segura del mapa distribuida en el tiempo
+task.spawn(function()
+    task.wait(0.5)
+    pcall(function()
+        local _step = 0
+        for _, obj in ipairs(workspace:GetDescendants()) do
+            local cls = obj.ClassName
+            if cls == "ParticleEmitter" or cls == "Trail" or cls == "Smoke" or cls == "Fire" or cls == "Sparkles" then
+                obj.Enabled = false
+            elseif obj:IsA("BasePart") and obj.Material == Enum.Material.Glass then
+                obj.Material = Enum.Material.SmoothPlastic
+            end
+            _step = _step + 1
+            if _step % 25 == 0 then task.wait(0.01) end
+        end
+    end)
+end)
+
+-- 3. BUCLE DE LA OPCIÓN B (Para tus funciones repetitivas principales)
+task.spawn(function()
+    while true do
+        task.spawn(function()
+            pcall(function()
+                -- AQUÍ ABRAZAS LAS FUNCIONES DE AUTO-FARM O REMOTOS QUE SE CRASHEABAN
+            end)
+        end)
+        task.wait() -- Espera obligatoria de 1 frame de Roblox para evitar congelamiento
+    end
+end)
 local TweenService      = game:GetService("TweenService")
 local UserInputService  = game:GetService("UserInputService")
 local RunService        = game:GetService("RunService")
